@@ -1,0 +1,30 @@
+version: '3.4'
+
+services:
+  receiver:
+    image: ${DOCKER_REGISTRY-}processor
+    build:
+      context: .
+      dockerfile: Processor/Dockerfile
+    depends_on:
+     - rabbitmq
+
+  clientui:
+    image: ${DOCKER_REGISTRY-}clientui
+    ports:
+      - 8080:80
+    build:
+      context: .
+      dockerfile: ClientUI/Dockerfile
+    depends_on:
+     - rabbitmq
+
+  rabbitmq:
+    image: "rabbitmq:3.11-management"
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    healthcheck:
+        test: ["CMD-SHELL", "if rabbitmqctl status; then \nexit 0 \nfi \nexit 1"]
+        interval: 10s
+        retries: 5
