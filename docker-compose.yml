@@ -1,7 +1,8 @@
 version: '3.4'
 
 services:
-  receiver:
+  processor:
+    container_name: backend-processor
     image: ${DOCKER_REGISTRY-}processor
     build:
       context: .
@@ -10,6 +11,7 @@ services:
      - rabbitmq
 
   clientui:
+    container_name: web-frontend
     image: ${DOCKER_REGISTRY-}clientui
     ports:
       - 8080:80
@@ -20,6 +22,7 @@ services:
      - rabbitmq
 
   rabbitmq:
+    container_name: transport
     image: "rabbitmq:3.11-management"
     ports:
       - "15672:15672"
