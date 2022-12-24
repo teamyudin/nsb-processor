@@ -1,0 +1,2 @@
+# nsb-processor
+NServiceBus Processor
