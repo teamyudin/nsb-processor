@@ -40,7 +40,5 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            processor:latest
-            processor:1.0.0
-            ghcr.io/processor:latest
-            ghcr.io/processor:1.0.0
+            eltasko/nsb-processor:latest
+            eltasko/nsb-processor:1.0.0
