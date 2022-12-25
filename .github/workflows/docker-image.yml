@@ -14,5 +14,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Build the Docker image
+    - name: Build Processor image
       run: docker build . --file "./Processor/Dockerfile" --tag processor:$(date +%s)
+    - name: Build Frontend image
+      run: docker build . --file "./ClientUI/Dockerfile" --tag clientui:$(date +%s)      
