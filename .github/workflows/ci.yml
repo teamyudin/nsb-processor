@@ -23,11 +23,11 @@ jobs:
           - dockerfile: ./Processor/Dockerfile
             images: | 
               ghcr.io/teamyudin/processor
-              eltasko/nsb-processor
+              eltasko/nsb-processor:processor
           - dockerfile: ./ClientUI/Dockerfile
             images: | 
               ghcr.io/teamyudin/clientui
-              eltasko/nsb-processor
+              eltasko/nsb-processor:client
     permissions:
       contents: read
       packages: write
