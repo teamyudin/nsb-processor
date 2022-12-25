@@ -21,7 +21,7 @@ jobs:
       matrix:
         include:
           - dockerfile: ./Processor/Dockerfile
-            images: ghcr.io/teamyudin/processor
+            image: ghcr.io/teamyudin/processor
           - dockerfile: ./ClientUI/Dockerfile
             image: ghcr.io/teamyudin/clientui
     permissions:
@@ -38,7 +38,7 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           # list of Docker images to use as base name for tags
-          images: ${{ matrix.image }}
+          image: ${{ matrix.image }}
           # generate Docker tags based on the following events/attributes
           tags: |
             type=schedule
