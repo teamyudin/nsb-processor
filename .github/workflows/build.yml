@@ -4,10 +4,10 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+
       - name: Build the stack
-        run: |
-          docker-compose up -detach --build
-          docker run --network nsb-processor_network clientui
-      # - name: Test Fronend
-      #   run: docker run --network nsb-processor_network clientui
+        run: docker-compose up -detach --build
+
+      - name: Test Fronend
+        run: docker run -p 8081:80 --network nsb-processor_network clientui
