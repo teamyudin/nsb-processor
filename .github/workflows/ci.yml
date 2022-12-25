@@ -15,6 +15,19 @@ on:
 jobs:
   docker:
     runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - dockerfile: ./Processor/Dockerfile
+            image: ghcr.io/teamyudin/processor
+          - dockerfile: ./ClientUI/Dockerfile
+            image: ghcr.io/teamyudin/clientui
+    permissions:
+      contents: read
+      packages: write
+
     steps:
       -
         name: Checkout
@@ -25,9 +38,7 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           # list of Docker images to use as base name for tags
-          images: |
-            eltasko/nsb-processor
-            ghcr.io/teamyudin/processor
+          images: ${{ matrix.image }}
           # generate Docker tags based on the following events/attributes
           tags: |
             type=schedule
@@ -57,11 +68,11 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
       -
-        name: Build and push
+        name: Build and push 
         uses: docker/build-push-action@v3
         with:
           context: .
-          file: "./Processor/Dockerfile"
+          file: ${{ matrix.dockerfile }}
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ${{ steps.meta.outputs.tags }}
