@@ -13,6 +13,23 @@ jobs:
         name: Checkout
         uses: actions/checkout@v3
       -
+        name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          # list of Docker images to use as base name for tags
+          images: |
+            eltasko/nsb-processor
+            ghcr.io/teamyudin/processor
+          # generate Docker tags based on the following events/attributes
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+            type=sha        
+      -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       -
@@ -39,8 +56,4 @@ jobs:
           file: "./Processor/Dockerfile"
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: |
-            eltasko/nsb-processor:latest
-            eltasko/nsb-processor:1.0.0
-            # ghcr.io/teamyudin/nsb-processor:latest
-            # ghcr.io/teamyudin/nsb-processor:1.0.0
+          tags: ${{ steps.meta.outputs.tags }}
