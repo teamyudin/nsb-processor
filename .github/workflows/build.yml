@@ -8,4 +8,4 @@ jobs:
       - name: Build the stack
         run: docker-compose up -d
       - name: Test Fronend
-        run: docker run -p 8081:80 --network nsb-processor_network clientui appropriate/curl -s --retry 10 --retry-connrefused http://localhost:8081/
+        run: docker run --network nsb-processor_network clientui appropriate/curl -s --retry 10 --retry-connrefused http://localhost:8080/
