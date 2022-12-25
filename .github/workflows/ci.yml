@@ -21,9 +21,13 @@ jobs:
       matrix:
         include:
           - dockerfile: ./Processor/Dockerfile
-            image: ghcr.io/teamyudin/processor
+            images: | 
+              ghcr.io/teamyudin/processor
+              eltasko/nsb-processor
           - dockerfile: ./ClientUI/Dockerfile
-            image: ghcr.io/teamyudin/clientui
+            images: |
+              ghcr.io/teamyudin/clientui
+              eltasko/nsb-processor
     permissions:
       contents: read
       packages: write
