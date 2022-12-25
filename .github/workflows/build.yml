@@ -8,4 +8,4 @@ jobs:
       - name: Build the stack
         run: docker-compose up -d
       - name: Test Fronend
-        run: docker run --network container:backend-processor appropriate/curl -s --retry 10 --retry-connrefused http://localhost:5000/
+        run: docker-compose up

@@ -5,7 +5,7 @@
     <DockerTargetOS>Linux</DockerTargetOS>
     <ProjectGuid>394efc22-b3a9-4599-abda-1ab91479af3d</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
-    <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/{Scheme}://{ServiceHost}:{ServicePort}</DockerServiceUrl>
+    <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/{Scheme}</DockerServiceUrl>
     <DockerServiceName>clientui</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>

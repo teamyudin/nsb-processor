@@ -1,9 +1,19 @@
 version: '3.4'
 
 services:
+  rabbitmq:
+    image: "rabbitmq:3.11-management"
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    healthcheck:
+        test: ["CMD", "curl", "-f", "http://localhost:15672"]
+        interval: 10s
+        retries: 5
+
   processor:
-    container_name: backend-processor
     image: ${DOCKER_REGISTRY-}processor
+    restart: on-failure
     build:
       context: .
       dockerfile: Processor/Dockerfile
@@ -11,8 +21,8 @@ services:
      - rabbitmq
 
   clientui:
-    container_name: web-frontend
     image: ${DOCKER_REGISTRY-}clientui
+    restart: on-failure
     ports:
       - 8080:80
     build:
@@ -21,13 +31,3 @@ services:
     depends_on:
      - rabbitmq
 
-  rabbitmq:
-    container_name: transport
-    image: "rabbitmq:3.11-management"
-    ports:
-      - "15672:15672"
-      - "5672:5672"
-    healthcheck:
-        test: ["CMD-SHELL", "if rabbitmqctl status; then \nexit 0 \nfi \nexit 1"]
-        interval: 10s
-        retries: 5
