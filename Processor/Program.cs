@@ -19,9 +19,9 @@ namespace Processor
             return Host.CreateDefaultBuilder(args)
                        .UseNServiceBus(context =>
                        {
-                           var endpointConfiguration = new EndpointConfiguration("Processor");
-
-                           endpointConfiguration.UseTransport(new RabbitMQTransport(RoutingTopology.Conventional(QueueType.Classic), "host=rabbitmq"));
+                           var endpointConfiguration = new EndpointConfiguration("Processor");                         
+                           var transport = new AzureServiceBusTransport("Endpoint=sb://nsb-processor.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=dHU0ZHC+WxQ7e7PEdTpi+8dEG6k2meP23V7UxyyPf4E=");
+                           var routing = endpointConfiguration.UseTransport(transport);
 
                            endpointConfiguration.SendFailedMessagesTo("error");
                            endpointConfiguration.AuditProcessedMessagesTo("audit");
