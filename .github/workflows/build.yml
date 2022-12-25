@@ -42,5 +42,5 @@ jobs:
           tags: |
             eltasko/nsb-processor:latest
             eltasko/nsb-processor:1.0.0
-            # ghcr.io/teamyudin/processor:latest
-            # ghcr.io/teamyudin/processor:1.0.0
+            # ghcr.io/teamyudin/nsb-processor:latest
+            # ghcr.io/teamyudin/nsb-processor:1.0.0
