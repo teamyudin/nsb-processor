@@ -3,6 +3,8 @@ version: '3.4'
 services:
   rabbitmq:
     image: "rabbitmq:3.11-management"
+    networks:
+      - network
     ports:
       - "15672:15672"
       - "5672:5672"
@@ -14,6 +16,8 @@ services:
   processor:
     image: ${DOCKER_REGISTRY-}processor
     restart: on-failure
+    networks:
+      - network
     build:
       context: .
       dockerfile: Processor/Dockerfile
@@ -25,9 +29,14 @@ services:
     restart: on-failure
     ports:
       - 8080:80
+    networks:
+      - network
     build:
       context: .
       dockerfile: ClientUI/Dockerfile
     depends_on:
      - rabbitmq
+
+networks:
+  network:
 
