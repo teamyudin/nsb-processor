@@ -21,13 +21,9 @@ jobs:
       matrix:
         include:
           - dockerfile: ./Processor/Dockerfile
-            images: | 
-              ghcr.io/teamyudin/processor
-              nsbprocessorclusterregistry.azurecr.io
+            image: ghcr.io/teamyudin/processor
           - dockerfile: ./ClientUI/Dockerfile
-            images: |
-              ghcr.io/teamyudin/clientui
-              nsbprocessorclusterregistry.azurecr.io
+            image: ghcr.io/teamyudin/clientui
     permissions:
       contents: read
       packages: write
@@ -42,7 +38,7 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           # list of Docker images to use as base name for tags
-          images: ${{ matrix.images }}
+          images: ${{ matrix.image }}
           # generate Docker tags based on the following events/attributes
           tags: |
             type=schedule
