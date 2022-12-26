@@ -8,6 +8,8 @@ WORKDIR /src
 COPY ["nuget.config", "."]
 COPY ["Processor/Processor.csproj", "Processor/"]
 COPY ["Shared/Shared.csproj", "Shared/"]
+COPY ["Utilities.AppSettings/Utilities.AppSettings.csproj", "Utilities.AppSettings/"]
+
 RUN dotnet restore "Processor/Processor.csproj"
 COPY . .
 WORKDIR "/src/Processor"
