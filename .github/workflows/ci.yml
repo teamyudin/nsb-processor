@@ -21,9 +21,13 @@ jobs:
       matrix:
         include:
           - dockerfile: ./Processor/Dockerfile
-            image: ghcr.io/teamyudin/processor
+            images: | 
+              ghcr.io/teamyudin/processor
+              nsbprocessorclusterregistry.azurecr.io
           - dockerfile: ./ClientUI/Dockerfile
-            image: ghcr.io/teamyudin/clientui
+            images: |
+              ghcr.io/teamyudin/clientui
+              nsbprocessorclusterregistry.azurecr.io
     permissions:
       contents: read
       packages: write
@@ -38,7 +42,7 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           # list of Docker images to use as base name for tags
-          images: ${{ matrix.image }}
+          images: ${{ matrix.images }}
           # generate Docker tags based on the following events/attributes
           tags: |
             type=schedule
@@ -61,6 +65,13 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      -
+        name: Login to Azure Container Registry
+        uses: azure/docker-login@v1
+        with:
+          login-server: nsbprocessorclusterregistry.azurecr.io
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
       -
         name: Build and push 
         uses: docker/build-push-action@v3
