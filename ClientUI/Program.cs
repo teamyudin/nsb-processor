@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using NServiceBus;
 using Shared;
+using Utilities.AppSettings;
 
 namespace ClientUI
 {   
@@ -16,18 +17,21 @@ namespace ClientUI
 
         public static IHostBuilder CreateHostBuilder(string[] args)
         {
+            var nsbConfig = AppSettingsFactory.GetSettings<NServiceBusConfig>();
+            var nsbConnectionString = AzureServiceBusConnectionStringFactory.Build(nsbConfig);
+
             return Host.CreateDefaultBuilder(args)
                         .UseNServiceBus(context =>
                         {
-                            var endpointConfiguration = new EndpointConfiguration("ClientUI");
+                            var endpointConfiguration = new EndpointConfiguration(nsbConfig.EndpointName);
 
-                            var transport = new AzureServiceBusTransport("Endpoint=sb://nsb-processor.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=dHU0ZHC+WxQ7e7PEdTpi+8dEG6k2meP23V7UxyyPf4E=");
+                            var transport = new AzureServiceBusTransport(nsbConnectionString);
                             var routing = endpointConfiguration.UseTransport(transport);
 
                             routing.RouteToEndpoint(typeof(ProcessMessage), "Processor");
 
-                            endpointConfiguration.SendFailedMessagesTo("error");
-                            endpointConfiguration.AuditProcessedMessagesTo("audit");
+                            endpointConfiguration.SendFailedMessagesTo(nsbConfig.EndpointName);
+                            endpointConfiguration.AuditProcessedMessagesTo(nsbConfig.AuditEndpointName);
 
                             endpointConfiguration.EnableInstallers();
                             endpointConfiguration.DefineCriticalErrorAction(CriticalErrorActions.RestartContainer);
