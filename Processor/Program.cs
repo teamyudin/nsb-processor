@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using Shared;
 using Microsoft.Extensions.Hosting;
 using NServiceBus;
+using Microsoft.Extensions.Configuration;
+using Utilities.AppSettings;
 
 namespace Processor
 {
@@ -16,15 +18,18 @@ namespace Processor
 
         public static IHostBuilder CreateHostBuilder(string[] args)
         {
+            var nsbConfig = AppSettingsFactory.GetSettings<NServiceBusConfig>();
+            var nsbConnectionString = AzureServiceBusConnectionStringFactory.Build(nsbConfig);
+
             return Host.CreateDefaultBuilder(args)
                        .UseNServiceBus(context =>
                        {
-                           var endpointConfiguration = new EndpointConfiguration("Processor");                         
-                           var transport = new AzureServiceBusTransport("Endpoint=sb://nsb-processor.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=dHU0ZHC+WxQ7e7PEdTpi+8dEG6k2meP23V7UxyyPf4E=");
+                           var endpointConfiguration = new EndpointConfiguration(nsbConfig.EndpointName);                         
+                           var transport = new AzureServiceBusTransport(nsbConnectionString);
                            var routing = endpointConfiguration.UseTransport(transport);
 
-                           endpointConfiguration.SendFailedMessagesTo("error");
-                           endpointConfiguration.AuditProcessedMessagesTo("audit");
+                           endpointConfiguration.SendFailedMessagesTo(nsbConfig.ErrorEndpointName);
+                           endpointConfiguration.AuditProcessedMessagesTo(nsbConfig.AuditEndpointName);
 
                            // So that when we test recoverability, we don't have to wait so long
                            // for the failed message to be sent to the error queue

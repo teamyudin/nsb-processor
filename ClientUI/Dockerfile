@@ -9,6 +9,8 @@ WORKDIR /src
 COPY ["nuget.config", "."]
 COPY ["ClientUI/ClientUI.csproj", "ClientUI/"]
 COPY ["Shared/Shared.csproj", "Shared/"]
+COPY ["Utilities.AppSettings/Utilities.AppSettings.csproj", "Utilities.AppSettings/"]
+
 RUN dotnet restore "ClientUI/ClientUI.csproj"
 COPY . .
 WORKDIR "/src/ClientUI"
