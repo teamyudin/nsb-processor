@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: clientui
+  labels:
+    app: clientui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: clientui
+  template:
+    metadata:
+      labels:
+        app: clientui
+    spec:
+      containers:
+        - name: clientui
+          image: ghcr.io/teamyudin/clientui:main
+          ports:
+          - containerPort: 80
+      imagePullSecrets:
+        - name: nsb-processor-registry
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: clientui
+  ports:
+  - nodePort: 30001
+    port: 8082
+    protocol: TCP
+    targetPort: 80
