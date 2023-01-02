@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: processor
+  labels:
+    app: processor
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: processor
+  template:
+    metadata:
+      labels:
+        app: processor
+    spec:
+      containers:
+        - name: processor
+          image: ghcr.io/teamyudin/processor:main
+          ports:
+          - containerPort: 80
+      imagePullSecrets:
+        - name: nsb-processor-registry
