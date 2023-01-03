@@ -16,8 +16,8 @@ spec:
     spec:
       containers:
         - name: processor
-          image: ghcr.io/teamyudin/processor:main
+          image: nsbprocessorclusterregistry.azurecr.io/processor:main
           ports:
           - containerPort: 80
-      imagePullSecrets:
-        - name: nsb-processor-registry
+      # imagePullSecrets:
+      #   - name: nsb-processor-registry
