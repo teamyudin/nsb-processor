@@ -56,11 +56,11 @@ jobs:
         uses: docker/setup-buildx-action@v2
       -
         name: Login to GitHub Container Registry
-        uses: azure/docker-login@v1
+        uses: docker/login-action@v2
         with:
-          registry: nsbprocessorclusterregistry.azurecr.io
-          username: ${{ secrets.ACR_USERNAME }}
-          password: ${{ secrets.ACR_PASSWORD }}       
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}         
       -
         name: Build and push 
         uses: docker/build-push-action@v3
