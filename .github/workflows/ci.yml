@@ -65,7 +65,7 @@ jobs:
         name: Login to Azure Container Registry
         uses: azure/docker-login@v1
         with:
-          registry: nsbprocessorclusterregistry.azurecr.io
+          login-server: nsbprocessorclusterregistry.azurecr.io
           username: ${{ secrets.ACR_USERNAME }} 
           password: ${{ secrets.ACR_PASSWORD }} 
       -
