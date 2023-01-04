@@ -23,7 +23,7 @@ stages:
         containerRegistry: 'nsbprocessorclusterregistry'
         repository: '$(imageRepo)'
         command: 'buildAndPush'
-        Dockerfile: '$(Build.SourceDirectory)/Processor/Dockerfile'
+        Dockerfile: '$(Pipeline.Workspace)/s/Processor/Dockerfile'
         #buildContext: '$(Build.Repository.LocalPath)'
         tags: |
           $(tag)
