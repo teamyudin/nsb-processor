@@ -27,7 +27,6 @@ stages:
         buildContext: '$(Build.Repository.LocalPath)'
         tags: |
           $(tag)
-          latest
     - task: PublishPipelineArtifact@1
       inputs:
         targetPath: '$(Pipeline.Workspace)/s/kubernetes'
@@ -38,6 +37,7 @@ stages:
   dependsOn: Build
   variables:
     ACR_SECRET: k8sacrsecret
+    ACR_DEV_URL: 'nsbprocessorclusterregistry.azurecr.io'
   jobs:
     - deployment: Deploy
       displayName: Deploy to AKS
@@ -66,5 +66,5 @@ stages:
               inputs:
                 action: 'deploy'
                 namespace: 'nsb-processor'
-                manifests: |
-                  $(Pipeline.Workspace)/manifests/processor-deployment.yaml
+                manifests: '$(Pipeline.Workspace)/manifests/processor-deployment.yaml'
+                containers: '$(ACR_DEV_URL)/$(imageRepo):$(tag)'
