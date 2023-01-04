@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: clientui
-          image: nsbprocessorclusterregistry.azurecr.io/clientui:main
+          image: nsbprocessorclusterregistry.azurecr.io/clientui
           ports:
           - containerPort: 80
       # imagePullSecrets:
