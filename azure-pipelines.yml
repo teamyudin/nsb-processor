@@ -49,18 +49,18 @@ stages:
           buildType: 'current'
           artifactName: 'manifests'
           targetPath: '$(Pipeline.Workspace)/manifests'
-      # - task: KubernetesManifest@0
-      #   inputs:
-      #     action: 'createSecret'
-      #     kubernetesServiceConnection: 'k8s-nsb-processor'
-      #     namespace: 'default'
-      #     secretType: 'dockerRegistry'
-      #     secretName: '$(ACR_SECRET)'
-      #     dockerRegistryEndpoint: 'nsbprocessorclusterregistry'
+      - task: KubernetesManifest@0
+        inputs:
+          action: 'createSecret'
+          kubernetesServiceConnection: 'k8s-nsb-processor'
+          namespace: 'nsb-processor'
+          secretType: 'dockerRegistry'
+          secretName: '$(ACR_SECRET)'
+          dockerRegistryEndpoint: 'nsbprocessorclusterregistry'
       - task: KubernetesManifest@0
         inputs:
           action: 'deploy'
           kubernetesServiceConnection: 'k8s-nsb-processor'
-          namespace: 'default'
+          namespace: 'nsb-processor'
           manifests: |
             $(Pipeline.Workspace)/manifests/processor-deployment.yaml
