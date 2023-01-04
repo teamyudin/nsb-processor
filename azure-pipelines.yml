@@ -39,30 +39,32 @@ stages:
   variables:
     ACR_SECRET: k8sacrsecret
   jobs:
-    - job: Deploy
+    - deployment: Deploy
       displayName: Deploy to AKS
+      environment: 'k8sdev.nsb-processor'
       pool:
         vmImage: ubuntu-latest
-      steps:
-      - task: DownloadPipelineArtifact@2
-        inputs:
-          buildType: 'current'
-          artifactName: 'manifests'
-          targetPath: '$(Pipeline.Workspace)/manifests'
-      - task: KubernetesManifest@0
-        displayName: Create Secret
-        inputs:
-          action: 'createSecret'
-          kubernetesServiceConnection: 'k8s-nsb-processor'
-          namespace: 'nsb-processor'
-          secretType: 'dockerRegistry'
-          secretName: '$(ACR_SECRET)'
-          dockerRegistryEndpoint: 'nsbprocessorclusterregistry'
-      - task: KubernetesManifest@0
-        displayName: Deploy Processor Manifest
-        inputs:
-          action: 'deploy'
-          kubernetesServiceConnection: 'k8s-nsb-processor'
-          namespace: 'nsb-processor'
-          manifests: |
-            $(Pipeline.Workspace)/manifests/processor-deployment.yaml
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - task: DownloadPipelineArtifact@2
+              inputs:
+                buildType: 'current'
+                artifactName: 'manifests'
+                targetPath: '$(Pipeline.Workspace)/manifests'
+            - task: KubernetesManifest@0
+              displayName: Create Secret
+              inputs:
+                action: 'createSecret'
+                namespace: 'nsb-processor'
+                secretType: 'dockerRegistry'
+                secretName: '$(ACR_SECRET)'
+                dockerRegistryEndpoint: 'nsbprocessorclusterregistry'
+            - task: KubernetesManifest@0
+              displayName: Deploy Processor Manifest
+              inputs:
+                action: 'deploy'
+                namespace: 'nsb-processor'
+                manifests: |
+                  $(Pipeline.Workspace)/manifests/processor-deployment.yaml
