@@ -24,9 +24,8 @@ stages:
         repository: '$(imageRepo)'
         command: 'buildAndPush'
         Dockerfile: '$(Pipeline.Workspace)/s/Processor/Dockerfile'
-        #buildContext: '$(Build.Repository.LocalPath)'
-        tags: |
-          $(tag)
+        buildContext: $(Build.SourcesDirectory)
+        tags: '$(tag)'
     - task: PublishPipelineArtifact@1
       inputs:
         targetPath: '$(Pipeline.Workspace)/s/kubernetes'
@@ -68,3 +67,4 @@ stages:
                 namespace: 'nsb-processor'
                 manifests: '$(Pipeline.Workspace)/manifests/processor-deployment.yaml'
                 containers: '$(ACR_DEV_URL)/$(imageRepo):$(tag)'
+                imagePullSecrets: '$(ACR_SECRET)'
