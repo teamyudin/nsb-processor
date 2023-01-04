@@ -24,7 +24,7 @@ stages:
         repository: '$(imageRepo)'
         command: 'buildAndPush'
         Dockerfile: '$(Build.SourceDirectory)/Processor/Dockerfile'
-        buildContext: '$(Build.Repository.LocalPath)'
+        #buildContext: '$(Build.Repository.LocalPath)'
         tags: |
           $(tag)
     - task: PublishPipelineArtifact@1
