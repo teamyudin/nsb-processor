@@ -1,0 +1,70 @@
+trigger:
+- main
+
+resources:
+- repo: self
+
+variables:
+  imageRepo: processor
+  tag: '$(Build.BuildId)'
+
+stages:
+- stage: Build
+  displayName: Build image
+  jobs:
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+    - task: Docker@2
+      displayName: Build an image
+      inputs:
+        containerRegistry: 'nsbprocessorclusterregistry'
+        repository: '$(imageRepo)'
+        command: 'buildAndPush'
+        Dockerfile: '$(Build.SourceDirectory)/Processor/Dockerfile'
+        buildContext: '$(Build.Repository.LocalPath)'
+        tags: |
+          $(tag)
+    - task: PublishPipelineArtifact@1
+      inputs:
+        targetPath: '$(Pipeline.Workspace)/s/kubernetes'
+        artifact: 'manifests'
+        publishLocation: 'pipeline'
+- stage: Deploy
+  displayName: Deploy to Dev
+  dependsOn: Build
+  variables:
+    ACR_SECRET: k8sacrsecret
+    ACR_DEV_URL: 'nsbprocessorclusterregistry.azurecr.io'
+  jobs:
+    - deployment: Deploy
+      displayName: Deploy to AKS
+      environment: 'k8sdev.nsb-processor'
+      pool:
+        vmImage: ubuntu-latest
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - task: DownloadPipelineArtifact@2
+              inputs:
+                buildType: 'current'
+                artifactName: 'manifests'
+                targetPath: '$(Pipeline.Workspace)/manifests'
+            - task: KubernetesManifest@0
+              displayName: Create Secret
+              inputs:
+                action: 'createSecret'
+                namespace: 'nsb-processor'
+                secretType: 'dockerRegistry'
+                secretName: '$(ACR_SECRET)'
+                dockerRegistryEndpoint: 'nsbprocessorclusterregistry'
+            - task: KubernetesManifest@0
+              displayName: Deploy Processor Manifest
+              inputs:
+                action: 'deploy'
+                namespace: 'nsb-processor'
+                manifests: '$(Pipeline.Workspace)/manifests/processor-deployment.yaml'
+                containers: '$(ACR_DEV_URL)/$(imageRepo):$(tag)'
