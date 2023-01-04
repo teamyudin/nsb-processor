@@ -50,6 +50,7 @@ stages:
           artifactName: 'manifests'
           targetPath: '$(Pipeline.Workspace)/manifests'
       - task: KubernetesManifest@0
+        displayName: Create Secret
         inputs:
           action: 'createSecret'
           kubernetesServiceConnection: 'k8s-nsb-processor'
@@ -58,6 +59,7 @@ stages:
           secretName: '$(ACR_SECRET)'
           dockerRegistryEndpoint: 'nsbprocessorclusterregistry'
       - task: KubernetesManifest@0
+        displayName: Deploy Processor Manifest
         inputs:
           action: 'deploy'
           kubernetesServiceConnection: 'k8s-nsb-processor'
