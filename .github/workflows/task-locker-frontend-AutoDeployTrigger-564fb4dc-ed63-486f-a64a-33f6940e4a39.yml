@@ -27,15 +27,15 @@ jobs:
       - name: Log in to container registry
         uses: docker/login-action@v1
         with:
-          registry: nsbprocessorclusterregistry.azurecr.io
-          username: ${{ secrets.TASKLOCKERFRONTEND_REGISTRY_USERNAME }}
-          password: ${{ secrets.TASKLOCKERFRONTEND_REGISTRY_PASSWORD }}
+          registry: ghcr.io/teamyudin/clientui
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push container image to registry
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: nsbprocessorclusterregistry.azurecr.io/clientui:${{ github.sha }}
+          tags: ghcr.io/teamyudin/clientui:${{ github.sha }}
           file: ./ClientUI/Dockerfile
           context: .
 
@@ -56,5 +56,5 @@ jobs:
         with:
           inlineScript: |
             az config set extension.use_dynamic_install=yes_without_prompt
-            az containerapp registry set -n task-locker-frontend -g tasklocker-rg --server nsbprocessorclusterregistry.azurecr.io --username  ${{ secrets.TASKLOCKERFRONTEND_REGISTRY_USERNAME }} --password ${{ secrets.TASKLOCKERFRONTEND_REGISTRY_PASSWORD }}
-            az containerapp update -n task-locker-frontend -g tasklocker-rg --image nsbprocessorclusterregistry.azurecr.io/clientui:${{ github.sha }}
+            az containerapp registry set -n task-locker-frontend -g tasklocker-rg --server ghcr.io/teamyudin/clientui --username  ${{ github.repository_owner }} --password ${{ secrets.GITHUB_TOKEN }}
+            az containerapp update -n task-locker-frontend -g tasklocker-rg --image ghcr.io/teamyudin/clientui:${{ github.sha }}
