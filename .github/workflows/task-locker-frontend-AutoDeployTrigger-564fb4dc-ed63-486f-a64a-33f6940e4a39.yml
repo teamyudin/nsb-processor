@@ -37,7 +37,7 @@ jobs:
           push: true
           tags: nsbprocessorclusterregistry.azurecr.io/clientui:${{ github.sha }}
           file: ./ClientUI/Dockerfile
-          context: ./ClientUI/
+          context: .
 
 
   deploy:
