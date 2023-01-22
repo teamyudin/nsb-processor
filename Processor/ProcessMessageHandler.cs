@@ -39,7 +39,7 @@ namespace Processor
 
             log.Info($"Message Processed, MessageId = {message.MessageId}");
 
-            return context.Reply(messageRecieved);
+            return context.Publish(messageRecieved);
         }
     }
 }

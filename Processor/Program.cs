@@ -24,7 +24,8 @@ namespace Processor
             return Host.CreateDefaultBuilder(args)
                        .UseNServiceBus(context =>
                        {
-                           var endpointConfiguration = new EndpointConfiguration(nsbConfig.EndpointName);                         
+                           var endpointConfiguration = new EndpointConfiguration(nsbConfig.EndpointName);
+                           endpointConfiguration.UseSerialization<NewtonsoftJsonSerializer>();
                            var transport = new AzureServiceBusTransport(nsbConnectionString);
                            var routing = endpointConfiguration.UseTransport(transport);
 
