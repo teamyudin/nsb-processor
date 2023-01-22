@@ -8,7 +8,7 @@ on:
       [ main ]
     paths:
     - 'Processor/**'
-    - '.github/workflows/task-locker-frontend-AutoDeployTrigger-564fb4dc-ed63-486f-a64a-33f6940e4a39.yml'
+    - '.github/workflows/task-locker-processor.yml'
 
   # Allow mannually trigger 
   workflow_dispatch:      
