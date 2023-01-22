@@ -35,8 +35,11 @@ namespace ClientUI.Controllers
 
             var command = new ProcessMessage { MessageId = orderId };
 
+            var options = new SendOptions();
+            options.SetDestination("Processor");
+
             // Send the command
-            await _messageSession.Send(command)
+            await _messageSession.Send(command, options)
                 .ConfigureAwait(false);
 
             _log.LogInformation($"Sending RequestMessage, MessageId = {orderId}");

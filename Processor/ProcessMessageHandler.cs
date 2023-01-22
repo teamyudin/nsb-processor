@@ -17,7 +17,7 @@ namespace Processor
 
             // This is normally where some business logic would occur
 
-            System.Threading.Thread.Sleep(5000);
+            //System.Threading.Thread.Sleep(5000);
 
             #region ThrowTransientException
             // Uncomment to test throwing transient exceptions
@@ -39,7 +39,7 @@ namespace Processor
 
             log.Info($"Message Processed, MessageId = {message.MessageId}");
 
-            return context.Publish(messageRecieved);
+            return context.Reply(messageRecieved);
         }
     }
 }

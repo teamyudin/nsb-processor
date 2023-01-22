@@ -28,8 +28,6 @@ namespace ClientUI
                             var transport = new AzureServiceBusTransport(nsbConnectionString);
                             var routing = endpointConfiguration.UseTransport(transport);
 
-                            routing.RouteToEndpoint(typeof(ProcessMessage), "Processor");
-
                             endpointConfiguration.SendFailedMessagesTo(nsbConfig.EndpointName);
                             endpointConfiguration.AuditProcessedMessagesTo(nsbConfig.AuditEndpointName);
 
