@@ -7,7 +7,7 @@ on:
     branches: 
       [ main ]
     paths:
-    - 'Processor/**'
+    - 'src/server/Processor/**'
     - '.github/workflows/tasklocker-processor-AutoDeployTrigger-adc05176-7d17-4f47-89ec-7fb2c3c02787.yml'
 
   # Allow mannually trigger 
@@ -36,7 +36,7 @@ jobs:
         with:
           push: true
           tags: crtasklocker.azurecr.io/processor:${{ github.sha }}
-          file: ./Processor/Dockerfile
+          file: ./src/server/Processor/Dockerfile
           context: .
 
   deploy:
