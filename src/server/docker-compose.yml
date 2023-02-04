@@ -6,7 +6,7 @@ services:
     restart: on-failure
     build:
       context: .
-      dockerfile: Processor/Dockerfile
+      dockerfile: src/server/Processor/Dockerfile
 
   clientui:
     image: ${DOCKER_REGISTRY-}clientui
@@ -15,4 +15,4 @@ services:
       - 8080:80
     build:
       context: .
-      dockerfile: ClientUI/Dockerfile
+      dockerfile: src/server/ClientUI/Dockerfile
