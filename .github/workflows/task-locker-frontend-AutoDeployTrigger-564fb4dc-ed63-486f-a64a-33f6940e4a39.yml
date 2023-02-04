@@ -37,7 +37,7 @@ jobs:
           push: true
           tags: crtasklocker.azurecr.io/clientui:${{ github.sha }}
           file: ./src/server/ClientUI/Dockerfile
-          context: .
+          context: ./src/server
 
 
   deploy:

@@ -37,7 +37,7 @@ jobs:
           push: true
           tags: crtasklocker.azurecr.io/processor:${{ github.sha }}
           file: ./src/server/Processor/Dockerfile
-          context: .
+          context: ./src/server
 
   deploy:
     runs-on: ubuntu-latest
