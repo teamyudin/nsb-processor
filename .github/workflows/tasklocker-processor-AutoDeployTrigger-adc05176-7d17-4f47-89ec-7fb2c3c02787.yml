@@ -21,6 +21,13 @@ jobs:
       - name: Checkout to the branch
         uses: actions/checkout@v2
 
+      - name: App Settings Variable Substitution
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: './src/server/ClientUI/appsettings.json'
+        env:
+          NServiceBusConfig.SharedAccessKey: ${{ secrets.AZURE_SERVICE_BUS_TASKLOCKER_SHAREDACCESSKEY }}
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
