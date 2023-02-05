@@ -24,7 +24,7 @@ jobs:
       - name: App Settings Variable Substitution
         uses: microsoft/variable-substitution@v1
         with:
-          files: './src/server/ClientUI/appsettings.json'
+          files: './src/server/Processor/appsettings.json'
         env:
           NServiceBusConfig.SharedAccessKey: ${{ secrets.AZURE_SERVICE_BUS_TASKLOCKER_SHAREDACCESSKEY }}
 
