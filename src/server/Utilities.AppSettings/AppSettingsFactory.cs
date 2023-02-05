@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using System.Reflection;
 
 namespace Utilities.AppSettings
 {
@@ -18,7 +19,9 @@ namespace Utilities.AppSettings
             var builder = new ConfigurationBuilder()
                   .AddJsonFile($"appsettings.json", true, true)
                   .AddJsonFile($"appsettings.{environmentName}.json", true, true)
+                  .AddUserSecrets(Assembly.GetEntryAssembly())
                   .AddEnvironmentVariables();
+
             var configuration = builder.Build();
 
             return configuration;

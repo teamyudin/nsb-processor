@@ -5,6 +5,7 @@ using Microsoft.Extensions.Hosting;
 using NServiceBus;
 using Microsoft.Extensions.Configuration;
 using Utilities.AppSettings;
+using System.Reflection;
 
 namespace Processor
 {
